@@ -19,15 +19,11 @@ function verifyUser(req, res) {
   // console.log(req.body);
   const values = [email, password];
   // console.log(values);
-  const verifyUserStr = "SELECT * FROM users WHERE user_email ='lolita@gmail.com';";
-  pgClient.query(format(verifyUserStr, values), (err, result) => {
-    console.log(result);
-    // console.log(result);
+  const verifyUserStr = 'SELECT * FROM users WHERE user_email = $1 AND user_password = $2;';
+  pgClient.query(verifyUserStr, values, (err, result) => {
     if (err) res.status(400).json({ error: 'Email or password is incorrect' });
     else res.status(200).json(result.rows[0]);
   })
 }
-
-
 
 module.exports = { createUser, verifyUser };

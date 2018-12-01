@@ -11,13 +11,14 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/restaurants');
-app.get('/restaurants/:name', )
-app.get('/orders');
+app.get('/restaurants', restaurantController.displayRests);
+app.get('/restaurants/:fkRestId', restaurantController.getRestMenu);
+app.get('/orders', orderController.displayOrders);
 
-app.post('/login', userController.verifyUser);
+app.post('/user/login', userController.verifyUser);
+app.post('/restaurant/login', restaurantController.verifyRest);
 app.post('/signup', userController.createUser);
-app.post('/order');
+app.post('/order', orderController.submitOrder);
 app.post('/order/:id');
 
 
