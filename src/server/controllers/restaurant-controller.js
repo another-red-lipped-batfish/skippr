@@ -21,9 +21,10 @@ function verifyRest(req, res) {
   // console.log(values);
   const verifyRestStr = 'SELECT * FROM restaurants WHERE rest_email = $1 AND rest_password = $2;';
   pgClient.query(verifyRestStr, values, (err, result) => {
-    if (err) res.status(400).json({ error: 'Email or password is incorrect' });
+    if (err) res.status(400).json({ error: 'Error' });
+    else if (result.rows.length === 0) res.status(400).json({ error: 'Incorrect email or password'});
     else res.status(200).json(result.rows[0]);
-  })
+  });
 }
 
 function displayRests(req, res) {
