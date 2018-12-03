@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-// const db = require('./models/database');
 const userController = require('./controllers/user-controller');
 const orderController = require('./controllers/order-controller');
 const restaurantController = require('./controllers/restaurant-controller');
@@ -20,9 +19,5 @@ app.post('/user/login', userController.verifyUser);
 app.post('/restaurant/login', restaurantController.verifyRest);
 app.post('/signup', userController.createUser);
 app.post('/order', orderController.submitOrder);
-app.post('/order/:id');
-
-
-
 
 app.listen(3000);
