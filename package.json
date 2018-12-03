@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server/server.js",
     "server": "node src/server/server.js"
   },
   "author": "team redlippedbatfish",
