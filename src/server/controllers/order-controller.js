@@ -1,7 +1,13 @@
 const pgClient = require('../models/database');
 
 function displayOrders(req, res) {
-
+  const { restId } = req.params;
+  const values = [restId];
+  const displayOrdersStr = 'SELECT oi.fk_orders, oi.fk_menu_item, r.rest_name, u.user_firstname, u.user_lastname FROM order_items AS oi INNER JOIN orders as o ON oi.fk_orders = o.order_id  INNER JOIN restaurants as r ON o.fk_rest_id = r.rest_id INNER JOIN users as u ON o.fk_user_id = u.user_id WHERE o.order_ready = false AND r.rest_id = $1;';
+  pgClient.query(displayOrdersStr, values, (err, result) => {
+    if (err) res.status(400).json({ error: 'Unable to retrieve orders' });
+    else res.status(200).json(result.rows);
+  });
 }
 
 function submitOrder(req, res) {
