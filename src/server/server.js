@@ -23,4 +23,4 @@ app.post('/restaurant/signup', restaurantController.createRest);
 
 app.put('/restaurant/orders/:orderId', orderController.completeOrder);
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
