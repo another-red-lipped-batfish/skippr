@@ -1,19 +1,22 @@
 const pgClient = require('../models/database');
-const SQL = require('sql-template-strings');
-const format = require('pg-format');
 
-// function createUser(req, res) {
-//   const { password, firstname, lastname, email, phonenumber} = req.body;
-//   // query to check if user is in database
-//   // if it doesn't exist, insert values into user table 
-//   const createUserStr = '';
-//   const createUserValues = '';
-//   pgClient.query(format(newUserStr, newUserValues), (err, result) => {
-//     if (err) res.status(400).send('error');
-//     else res.send('New user has been created');
-//   })
-// }
+// STRETCH FEATURE: write new restaurant row to restaurants table
+function createRest(req, res) {
+  const { name, email, password, address, city, state, zipCode, phone, yelpLink, imageLink } = req.body;
+  const values = [name, email, password, address, city, state, zipCode, phone, yelpLink, imageLink];
+  const createRestStr = 'INSERT INTO restaurants (rest_name, rest_email, rest_password, rest_address, rest_city, rest_state, rest_zipcode, rest_phone, rest_yelp_link, rest_imagelink) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *;';
+  pgClient.query(createRestStr, values, (err, result) => {
+    if (err) res.status(400).json({ error: 'Unable to create a restaurant account' });
+    else {
+      res.status(200).json({
+        message: 'New restaurant account has been successfully created',
+        restaurant: result.rows[0],
+      });
+    }
+  });
+}
 
+// fetch restaurant email and password match from restaurants table
 function verifyRest(req, res) {
   const { email, password } = req.body;
   // console.log(req.body);
@@ -27,6 +30,7 @@ function verifyRest(req, res) {
   });
 }
 
+// fetch list of restaurants from restaurants table
 function displayRests(req, res) {
   const displayRestsStr = 'SELECT * FROM restaurants;';
   pgClient.query(displayRestsStr, (err, result) => {
@@ -35,6 +39,7 @@ function displayRests(req, res) {
   });
 }
 
+// fetch list of menu items from menu items table
 function getRestMenu(req, res) {
   const { fkRestId } = req.params;
   const values = [fkRestId];
@@ -45,4 +50,4 @@ function getRestMenu(req, res) {
   });
 }
 
-module.exports = { verifyRest, displayRests, getRestMenu };
+module.exports = { createRest, verifyRest, displayRests, getRestMenu };
