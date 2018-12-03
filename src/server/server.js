@@ -20,4 +20,6 @@ app.post('/restaurant/login', restaurantController.verifyRest);
 app.post('/signup', userController.createUser);
 app.post('/user/order', orderController.submitOrder);
 
+app.put('/restaurant/orders/:orderId', orderController.completeOrder);
+
 app.listen(3000);

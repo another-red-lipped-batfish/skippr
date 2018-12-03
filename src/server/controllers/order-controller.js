@@ -32,4 +32,19 @@ function submitOrder(req, res) {
   });
 }
 
-module.exports = { displayOrders, submitOrder };
+function completeOrder(req, res) {
+  const { orderId } = req.params;
+  const values = [orderId];
+  const completeOrderStr = 'UPDATE orders SET order_ready = true WHERE order_id = $1 RETURNING order_ready AS order_ready;';
+  pgClient.query(completeOrderStr, values, (err) => {
+    if (err) res.status(400).json({ error: 'Unable to update order' });
+    else {
+      res.status(200).json({
+        message: 'This order has been completed',
+        orderId,
+      });
+    }
+  });
+}
+
+module.exports = { displayOrders, submitOrder, completeOrder };
