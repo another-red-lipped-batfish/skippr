@@ -17,8 +17,9 @@ app.get('/restaurant/orders/:restId', orderController.displayOrders);
 
 app.post('/user/login', userController.verifyUser);
 app.post('/restaurant/login', restaurantController.verifyRest);
-app.post('/signup', userController.createUser);
+app.post('/user/signup', userController.createUser);
 app.post('/user/order', orderController.submitOrder);
+app.post('/restaurant/signup', restaurantController.createRest);
 
 app.put('/restaurant/orders/:orderId', orderController.completeOrder);
 

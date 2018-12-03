@@ -1,5 +1,6 @@
 const pgClient = require('../models/database');
 
+// fetch list of incomplete orders for restaurant ID
 function displayOrders(req, res) {
   const { restId } = req.params;
   const values = [restId];
@@ -10,10 +11,11 @@ function displayOrders(req, res) {
   });
 }
 
+// write new order to orders table, write order item IDs to order items table
 function submitOrder(req, res) {
   const { userId, restId, menuItems } = req.body;
   const idValues = [userId, restId];
-  const createOrderStr = 'INSERT INTO orders (order_ready, fk_user_id, fk_rest_id) VALUES (false, (SELECT user_id from users WHERE user_id = $1 ), (SELECT rest_id from restaurants WHERE     rest_id = $2 )) RETURNING order_id;';
+  const createOrderStr = 'INSERT INTO orders (order_ready, fk_user_id, fk_rest_id) VALUES (false, (SELECT user_id from users WHERE user_id = $1 ), (SELECT rest_id from restaurants WHERE rest_id = $2 )) RETURNING order_id;';
   pgClient.query(createOrderStr, idValues, (err, result) => {
     if (err) res.status(400).json({ error: 'Unable to submit order' });
     else {
@@ -32,6 +34,7 @@ function submitOrder(req, res) {
   });
 }
 
+// update order ready status to be true for specific orders in orders table
 function completeOrder(req, res) {
   const { orderId } = req.params;
   const values = [orderId];
