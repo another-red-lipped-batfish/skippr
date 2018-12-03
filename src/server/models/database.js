@@ -2,7 +2,7 @@ const pg = require('pg');
 // const pgp = require('pg-promise')(options);
 // const pool = new pg.Pool();
 
-const uri = 'postgres://bjggycej:jJQdZNJmfDxwVmSrL1xMl5UAXofuZ7n2@pellefant.db.elephantsql.com:5432/bjggycej';
+const uri = process.env.POSTGRES_URI;
 
 const pgClient = new pg.Client(uri);
 pgClient.connect();
